@@ -7,7 +7,7 @@ let resultsContainer = document.getElementById('results')
 const quesButton = document.querySelector("#show-ques")
 const submitButton = document.getElementById('submit-button')
 
-// 
+//
 // fetch('url')
 // .then(function (resp){
 //   return resp.json()
@@ -17,24 +17,55 @@ const submitButton = document.getElementById('submit-button')
 quesButton.addEventListener("click",function(e){
 
 
+//
+// fetch('https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple')
+// .then(res => res.json())
+//   .then(questions => {
+//
+//
+//     const quesContainer = document.querySelector("#question-container")
+//
+//     questions.results.forEach(function(question) {
+//           // console.log(question.question)
+//           // iterating throughout the array of objects by using forEach which takes in a callback function and the question as the single objects.)
+//           const newQuesElement = document.createElement('p')
+//           // setting a new element = to <p>
+//           newQuesElement.innerText = question.question
+//           // setting the inner text on the new Element to an item's name from the array
+//           quesContainer.appendChild(newQuesElement)
+//           // adding the new element to the existing <div>
+//         })
+//
+//       })
+//     })
+  //
+  fetch('https://opentdb.comapi.php?amount=10&category=9&difficulty=easy&type=multiple')
+    .then(res => {return  res.json();})
+      .then(questions => {
+        const quesContainer = document.querySelector("#question-container")
 
-fetch('https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple')
-.then(res => res.json())
-  .then(questions => {
 
-
-    const quesContainer = document.querySelector("#question-container")
-    questions.results.forEach(function(question) {
-          console.log(question.question)
-          // iterating throughout the array of objects by using forEach which takes in a callback function and the question as the single objects.)
+        questions.results.map( question => {
+          const realQuestion = {
+            question:question.question
+          };
           const newQuesElement = document.createElement('p')
-          // setting a new element = to <p>
-          newQuesElement.innerText = question.question
-          // setting the inner text on the new Element to an item's name from the array
-          quesContainer.appendChild(newQuesElement)
-          // adding the new element to the existing <div>
-        })
 
+          const answerChoices = [... question.incorrect_answers];
+          realQuestion.answer = Math.floor(Math.random() * 3) + 1;
+          answerChoices.splice( -1,0,question.correct_answer);
+
+          newQuesElement.innerText = question.question
+
+          answerChoices.forEach((choice, index) => {
+            realQuestion["choice" + (index +1)] = choice;
+          });
+
+          return realQuestion;
+
+          quesContainer.appendChild(newQuesElement)
+
+        })
       })
     })
 //
