@@ -39,8 +39,8 @@ quesButton.addEventListener("click",function(e){
 //       })
 //     })
   //
-  fetch('https://opentdb.comapi.php?amount=10&category=9&difficulty=easy&type=multiple')
-    .then(res => {return  res.json();})
+  fetch('https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple')
+    .then(res => res.json())
       .then(questions => {
         const quesContainer = document.querySelector("#question-container")
 
@@ -64,6 +64,8 @@ quesButton.addEventListener("click",function(e){
           return realQuestion;
 
           quesContainer.appendChild(newQuesElement)
+
+          return quesContainer
 
         })
       })
