@@ -17,15 +17,16 @@ const submitButton = document.getElementById('submit-button')
 quesButton.addEventListener("click",function(e){
 
 
-//
+
 // fetch('https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple')
 // .then(res => res.json())
 //   .then(questions => {
 //
 //
 //     const quesContainer = document.querySelector("#question-container")
-//
+//     console.log(questions)
 //     questions.results.forEach(function(question) {
+//
 //           // console.log(question.question)
 //           // iterating throughout the array of objects by using forEach which takes in a callback function and the question as the single objects.)
 //           const newQuesElement = document.createElement('p')
@@ -38,40 +39,63 @@ quesButton.addEventListener("click",function(e){
 //
 //       })
 //     })
-  //
-  fetch('https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple')
+//   //
+  fetch('http://localhost:3000/api/v1/questions')
     .then(res => res.json())
       .then(questions => {
+        console.log(questions[0])
         const quesContainer = document.querySelector("#question-container")
 
-
-        questions.results.map( question => {
+        questions.map( question => {
+          // individual objects
           const realQuestion = {
+
             question:question.question
           };
+          console.log(realQuestion)
+          // individual question
+          // console.log(realQuestion)
+
           const newQuesElement = document.createElement('p')
+          // how do I get the realQuestion added to the newQuesElement
+          // if i cannot then that means i have to do something else.
+          //
+          // realQuestion = {" "}
+          // is not equal to each other
+          // newQuesElement = (' ')
+          // question.incorrect_answer = string
+            // choiceArray
 
-          const answerChoices = [... question.incorrect_answers];
+           const orgIncorrect = question.incorrect_answer.replace(/]|"|"|/g,"").substring(1).split(',')
+           // orgIncorrect.split(",")
+
+           // console.log(orgIncorrect)
+           // orgIncorrect[0]
+          const answerChoices = [... orgIncorrect];
+
+          // an array of incorrect answers
           realQuestion.answer = Math.floor(Math.random() * 3) + 1;
+          // return a random integer between 0 & 3 I think
           answerChoices.splice( -1,0,question.correct_answer);
+          // we add the correct answer choice to the array of incorrect answers
 
-          newQuesElement.innerText = question.question
+          newQuesElement.innerText = realQuestion;
 
           answerChoices.forEach((choice, index) => {
             realQuestion["choice" + (index +1)] = choice;
           });
 
-          return realQuestion;
+          return newQuesElement
 
           quesContainer.appendChild(newQuesElement)
 
-          return quesContainer
+
 
         })
       })
     })
-//
-//
+
+
 //
 //
 //
