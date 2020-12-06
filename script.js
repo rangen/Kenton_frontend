@@ -3,6 +3,7 @@
 // using an array from apiSrc
 //  url = apiSrc
 //
+let gameButton = document.getElementById('#game-btn')
 let resultsContainer = document.getElementById('results')
 const quesButton = document.querySelector("#show-ques")
 const submitButton = document.getElementById('submit-button')
@@ -13,7 +14,7 @@ const submitButton = document.getElementById('submit-button')
 //   return resp.json()
 // })
 // .then(function(arrayofObjects){console.log(arrayofObjects)})
-
+gameButton.addEventListener("click")
 quesButton.addEventListener("click",function(e){
 
 
