@@ -14,7 +14,7 @@ const submitButton = document.getElementById('submit-button')
 //   return resp.json()
 // })
 // .then(function(arrayofObjects){console.log(arrayofObjects)})
-gameButton.addEventListener("click")
+// gameButton.addEventListener("click")
 quesButton.addEventListener("click",function(e){
 
 
@@ -44,9 +44,13 @@ quesButton.addEventListener("click",function(e){
   fetch('http://localhost:3000/api/v1/questions')
     .then(res => res.json())
       .then(questions => {
-        console.log(questions[0])
-        const quesContainer = document.querySelector("#question-container")
+        // console.log(questions[0])
 
+
+        // .catch(err => alert(err))
+        const quesContainer = document.querySelector("#question-container")
+        // create instances of the same class
+        // an instance of the
         questions.map( question => {
           // individual objects
           const realQuestion = {
@@ -70,25 +74,32 @@ quesButton.addEventListener("click",function(e){
            const orgIncorrect = question.incorrect_answer.replace(/]|"|"|/g,"").substring(1).split(',')
            // orgIncorrect.split(",")
 
-           // console.log(orgIncorrect)
+           console.log(orgIncorrect)
            // orgIncorrect[0]
           const answerChoices = [... orgIncorrect];
-
+            // debugger
           // an array of incorrect answers
           realQuestion.answer = Math.floor(Math.random() * 3) + 1;
           // return a random integer between 0 & 3 I think
           answerChoices.splice( -1,0,question.correct_answer);
           // we add the correct answer choice to the array of incorrect answers
 
-          newQuesElement.innerText = realQuestion;
+          newQuesElement.innerText = realQuestion.question;
+          // console.log(newQuesElement)
+          // how do I get one question at a time ?
+          // instead of all of them?
+          // can i apply a wait function/slow
+          // maybe have a function to getQuestions => renderQuestion ; to show individual question => then renderAnswer to show answers corresponding to question ??
 
           answerChoices.forEach((choice, index) => {
             realQuestion["choice" + (index +1)] = choice;
           });
 
-          return newQuesElement
+          // return newQuesElement
 
           quesContainer.appendChild(newQuesElement)
+
+          // console.log(quesContainer)Z
 
 
 
