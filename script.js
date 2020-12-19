@@ -3,11 +3,22 @@
 // using an array from apiSrc
 //  url = apiSrc
 //
-let gameButton = document.getElementById('#game-btn')
-let resultsContainer = document.getElementById('results')
-const quesButton = document.querySelector("#show-ques")
-const submitButton = document.getElementById('submit-button')
-const baseUrl = "http://localhost:3000/api/v1/questions"
+
+let resultsContainer = document.getElementById('results');
+const quesButton = document.getElementById("show-ques");
+const submitButton = document.getElementById('submit-button');
+const baseUrl = "http://localhost:3000/api/v1/questions";
+// const orgIncorrect = question.incorrect_answer.replace(/]|"|"|/g,"").substring(1).split(',')
+// const correctAnswer = question.correct_answer;
+// const riddle = document.getElementById('riddle');
+// const choices = Array.from(document.getElementsByClassName('choice-text'));
+// let quesArray = [
+//   new Question(question.question, orgIncorrect, correctAnswer);
+//   const currentQuestion = {};
+//   const score = 0;
+//   const questionCounter = 0;
+//   const availableQuestions = [];
+//
 //
 // fetch('url')
 // .then(function (resp){
@@ -15,7 +26,12 @@ const baseUrl = "http://localhost:3000/api/v1/questions"
 // })
 // .then(function(arrayofObjects){console.log(arrayofObjects)})
 // gameButton.addEventListener("click")
+let questionCounter = 1;
+
 quesButton.addEventListener("click",function(e){
+  console.log("Test")
+  getQuestions(questionCounter++);
+})
 
 
 //
@@ -54,33 +70,63 @@ quesButton.addEventListener("click",function(e){
 // })
 
 
-function getQuestions(){
-  fetch('http://localhost:3000/api/v1/questions')
+function getQuestions(id){
+  // console.log("hello")
+  fetch(`http://localhost:3000/api/v1/questions/${id}`)
   .then(res => res.json())
-  .then(questions =>{
-    questions.forEach(question => {renderCurrentQuestion(question)} )
+  .then(question =>{
+    console.log(question);
+    // questions.forEach(question => {renderCurrentQuestion(question)} )
+    renderCurrentQuestion(question);
+
   })
 }
-})
-
-
-
-
-
-
-
+// getQuestions()
 
 function renderCurrentQuestion(question){
-
-  const newQuesElement = document.createElement("p")
-  const quesContainer = document.querySelector('#question-container')
+// console.log(question)
+  // const question = getElementById('question')
+  // console.log(choices)
+  const newQuesElement = document.createElement("p");
+  const quesContainer = document.getElementById('question-container');
   const realQuestion = {
     question:question.question
   };
-  newQuesElement.innerText = realQuestion.question
-  quesContainer.appendChild(newQuesElement)
+  newQuesElement.innerText = realQuestion.question;
+  quesContainer.appendChild(newQuesElement);
+
+  function insert(arr, index, newItem)
+  { return [...arr.slice(0, index +1), newItem, ...arr.splice(index+1, arr.length)];} 
+
+  const incorrectOptions = question.incorrect_answer.replace(/]|"|"|/g,"").substring(1).split(',');
+  console.log(incorrectOptions)
+
+  // let optionArray = [...incorrectOptions]
+  // console.log(optionArray);
+
+  incorrectOptions.forEach((wrongChoice, i) => {
+    console.log(wrongChoice)
+  });
+
+
+
+  const choiceArray = Array.from(document.getElementsByClassName('choice-text'))
+  console.log(choiceArray);
+
+  choiceArray.forEach((choice) => {
+    const number = choice.dataset['number'];
+    choice.innerText = incorrectOptions
+  });
+
+
+  let answer = Math.floor(Math.random() * 3) + 1;
+  // debugger
+
 }
-})
+
+
+// function addUser(){}
+
 //   fetch('http://localhost:3000/api/v1/questions')
 //     .then(res => res.json())
 //       .then(questions => {
@@ -118,17 +164,17 @@ function renderCurrentQuestion(question){
 //           // question.incorrect_answer = string
 //             // choiceArray
 //
-//            const orgIncorrect = question.incorrect_answer.replace(/]|"|"|/g,"").substring(1).split(',')
-//            // orgIncorrect.split(",")
+            // orgIncorrect.split(",")
+            // question.incorrect_answer.replace(/]|"|"|/g,"").substring(1).split(',')
 //
 //            console.log(orgIncorrect)
 //            // orgIncorrect[0]
 //           const answerChoices = [... orgIncorrect];
 //             // debugger
 //           // an array of incorrect answers
-//           realQuestion.answer = Math.floor(Math.random() * 3) + 1;
+          // realQuestion.answer = Math.floor(Math.random() * 3) + 1;
 //           // return a random integer between 0 & 3 I think
-//           answerChoices.splice( -1,0,question.correct_answer);
+//           answerChoices.splice( -1,0,question.correct_anwser);
 //           // we add the correct answer choice to the array of incorrect answers
 //
 //           newQuesElement.innerText = realQuestion.question;
