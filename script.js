@@ -8,6 +8,11 @@ let resultsContainer = document.getElementById('results');
 const quesButton = document.getElementById("show-ques");
 const submitButton = document.getElementById('submit-button');
 const baseUrl = "http://localhost:3000/api/v1/questions";
+let availableOptions = []
+
+
+
+
 // const orgIncorrect = question.incorrect_answer.replace(/]|"|"|/g,"").substring(1).split(',')
 // const correctAnswer = question.correct_answer;
 // const riddle = document.getElementById('riddle');
@@ -94,40 +99,75 @@ function renderCurrentQuestion(question){
   };
   newQuesElement.innerText = realQuestion.question;
   quesContainer.appendChild(newQuesElement);
+  // change
 
-  function insert(arr, index, newItem)
-  { return [...arr.slice(0, index +1), newItem, ...arr.splice(index+1, arr.length)];} 
 
   const incorrectOptions = question.incorrect_answer.replace(/]|"|"|/g,"").substring(1).split(',');
-  console.log(incorrectOptions)
+  // console.log(incorrectOptions)
+  let correctAnswer = question.correct_anwser
+  console.log(correctAnswer)
 
-  // let optionArray = [...incorrectOptions]
-  // console.log(optionArray);
+  let answerSpace = Math.floor(Math.random() * 3) + 1;
+  console.log(answerSpace)
 
-  incorrectOptions.forEach((wrongChoice, i) => {
-    console.log(wrongChoice)
+  let newSpace = answerSpace + 1;
+  console.log(newSpace)
+
+  // function insert(arr, index, newItem)
+  // { return [...arr.slice(0, index+1), newItem, ...arr.slice(index+1, arr.length)];} 
+  // console.log(insert)
+
+  // insert(incorrectOptions,answerSpace,correctAnswer)
+  //   console.log(insert);
+  // // {return[...incorrectOptions.slice(answerSpace,answerSpace++),correctAnswer,...incorrectOptions.slice(answerSpace++,availableOptions.length)]}
+  // console.log(insert);
+
+  //   function insert(incorrectOptions,answerSpace,correctAnswer){ return(
+  // [...incorrectOptions.slice(0,newSpace),correctAnswer,...incorrectOptions.slice(newSpace,incorrectOptions.length)])
+  //  ;}
+  //
+  // insert()
+  // console.log(insert)
+
+
+  // [...test.slice(0),"never",...test.slice(test.length)]
+  
+   const optionsArray = [correctAnswer,...incorrectOptions,]
+
+
+   // adding options to choice-text
+    const optionA = document.getElementById("a")
+    // gets the answer selection
+    optionA.innerText = optionsArray[0]
+    // sets the answer selection
+    const optionB = document.getElementById("b")
+    optionB.innerText = optionsArray[1]
+    const optionC = document.getElementById("c")
+    optionC.innerText = optionsArray[2]
+    const optionD = document.getElementById("d")
+    optionD.innerText = optionsArray[3]
+};
+
+
+
+const choiceArray = Array.from(document.getElementsByClassName("choice-container"));
+console.log(choiceArray)
+//
+choiceArray.forEach((choice) => {
+  choice.addEventListener("click",function(e){
+    console.log(e.target.innerText)
+    if(e.target.innerText == correctAnswer){
+      console.log("sup")
+    }
+    else{
+      console.log("wrong")
+    }
   });
+});
 
 
 
-  const choiceArray = Array.from(document.getElementsByClassName('choice-text'))
-  console.log(choiceArray);
 
-  choiceArray.forEach((choice) => {
-    const number = choice.dataset['number'];
-    choice.innerText = incorrectOptions
-  });
-
-
-  let answer = Math.floor(Math.random() * 3) + 1;
-  // debugger
-
-}
-
-
-// function addUser(){}
-
-//   fetch('http://localhost:3000/api/v1/questions')
 //     .then(res => res.json())
 //       .then(questions => {
 //         // console.log(questions[0].correct_anwser
