@@ -86,6 +86,7 @@ function getQuestions(id){
 
 // getQuestions()
 
+
 function renderCurrentQuestion(question){
   const newQuesElement = document.createElement("p");
   const quesContainer = document.getElementById('question-container');
@@ -114,6 +115,10 @@ function renderCurrentQuestion(question){
 
   // [...test.slice(0),"never",...test.slice(test.length)]
 
+//   function newArray()
+// {return[...test.slice(),"never",...test.slice(test.length)]}
+//
+
    const optionsArray = [correctAnswer,...incorrectOptions];
    // adding options to choice-text
     const optionA = document.getElementById("a");
@@ -126,6 +131,7 @@ function renderCurrentQuestion(question){
     optionC.innerText = optionsArray[2];
     const optionD = document.getElementById("d");
     optionD.innerText = optionsArray[3];
+
 
     const choiceArray = Array.from(document.getElementsByClassName("choice-container"));
     console.log(choiceArray);
@@ -141,9 +147,10 @@ function renderCurrentQuestion(question){
         }
       });
     });
+    debugger
 }
 
-//         
+//
 //           const newQuesElement = document.createElement('p')
 //           // how do I get the realQuestion added to the newQuesElement
 //           // if i cannot then that means i have to do something else.
