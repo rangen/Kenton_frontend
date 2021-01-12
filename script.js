@@ -116,6 +116,7 @@ function renderCurrentQuestion(question) {
                 correctCount++;
                 document.getElementById("score-output").innerText = `Here's your new score player ${currentScore} `+"%" ;
 
+
         }
         else{
             console.log("wrong");
@@ -126,3 +127,46 @@ function renderCurrentQuestion(question) {
  		   });
      });
 };
+
+
+
+
+// fetch request with
+// // updating a current question
+list = [];
+
+const data = { quiz: 'example' };
+
+fetch(`http://localhost:3000/api/v1/questions/${id}`/post, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({question:
+    "correct_anwser": "6",
+     "incorrect_answer": "[\"5\", \"3\", \"4\"]",
+     "question": "How many NBA championship rings did Michael Jordan have?",
+     })
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Success:', data);
+})
+.catch((error) => {
+  console.error('Error:', error);
+});
+
+//
+// // fetch request with delete
+// // removing a question
+// fetch('https://example.com/profile', {
+//   method: 'delete', // or 'PUT'
+// .then(response => response.json())
+// .then(data => {
+//   console.log('Success:', data);
+// })
+// .catch((error) => {
+//   console.error('Error:', error);
+// });
+// //  I need 2 other AJAX requests
+// PUT and Delete!!
