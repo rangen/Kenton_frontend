@@ -28,7 +28,20 @@ function getQuestions(id){
 });
 }
 
-function reDirect() { window.location.assign("./game.html");             } 
+function reDirect() { 
+  console.log("hello")
+  // redirecting to fuction that would render a form and post to the database via fetch request 
+  // const gameContainer = document.createElement("<div id= 'game-html'  >
+  //             <label for='lname'>Username</label>
+  //             <input type='text' name='LastName'id='lname' placeholder='enter you name'><br/><br/>
+  //             <input type='submit' value='Save' id='save-button'/>
+  //             </div>")
+
+const questionContainer =  document.getElementById('question-container').style.visibility = "hidden";
+const highscoreContainer =  document.getElementById('high-score-container').appendChild(gameContainer);
+} 
+
+const saveButton = document.getElementById('save-button');
 
 
 function renderCurrentQuestion(question) {
