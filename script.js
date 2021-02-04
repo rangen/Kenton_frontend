@@ -26,11 +26,13 @@ function getQuestions(id){
   console.log( "hello", error)
   reDirect()
 });
-}
+// // }
+// Question.getQuestions();
+// // calling the get questions class
 
 function reDirect() { 
   console.log("hello")
-  // redirecting to fuction that would render a form and post to the database via fetch request 
+  // redirecting to function that would render a form and post to the database via fetch request
   // const gameContainer = document.createElement("<div id= 'game-html'  >
   //             <label for='lname'>Username</label>
   //             <input type='text' name='LastName'id='lname' placeholder='enter you name'><br/><br/>
@@ -38,11 +40,18 @@ function reDirect() { 
   //             </div>")
 
 const questionContainer =  document.getElementById('question-container').style.visibility = "hidden";
-const highscoreContainer =  document.getElementById('high-score-container').appendChild(gameContainer);
-} 
+const formDiv = document.getElementById("form-div").style.display = "none"
+// const highscoreContainer =  document.getElementById('high-score-container').appendChild(gameContainer);
+}
+// const myForm = document.getElementById('myForm').style.visibility = 'visible'
 
-const saveButton = document.getElementById('save-button');
+// const saveButton = document.getElementById('save-button');
+//  So if all the questions have gone through I then want to load the form ?
+// How would I load the form after questions have been answered?
 
+function calculateScore(totalCorrect, numQuestions ) {
+  return ((correctCount/questionCounter) * 100).toFixed(1);
+}
 
 function renderCurrentQuestion(question) {
     let innerQuestion = document.getElementById("question-text").innerText = question.question;
@@ -57,7 +66,7 @@ function renderCurrentQuestion(question) {
     let answerSpace = Math.floor(Math.random() * 3) + 1;
     // returns a random integer between 0 -> 4
 
-    let currentScore = ((correctCount/questionCounter) * 100).toFixed(1);
+    let currentScore = calculateScore(correctCount, questionCounter)
     // setting player's current score to  a percent
 
     const optionsArray = incorrectOptions.splice(answerSpace -1,0,correctAnswer);
@@ -78,10 +87,12 @@ function renderCurrentQuestion(question) {
 
   	choiceArray.forEach((choice) => {
 		 choice.addEventListener("click",function(e){
-       console.log(e.target)
+       console.log('clicked on an option')
 		    if(e.target.innerText == correctAnswer){
                 console.log("sup");
-                correctCount++;
+                ++correctCount;
+                currentScore = calculateScore(correctCount, questionCounter)
+                console.log(questionCounter)
                 document.getElementById("score-output").innerText = `Here's your new score player ${currentScore} `+"%" ;
 
 
@@ -100,7 +111,7 @@ function renderCurrentQuestion(question) {
 isEnded = () => {
   // return this.question. === this.questions.length
 }
-
+}
 
 
 
