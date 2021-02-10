@@ -10,8 +10,15 @@ let correctCount = 0;
 
 quesButton.addEventListener("click",function(e){
   getQuestions(++questionCounter);
-});
+  },hideshow);
 
+function hideshow() {
+  const hiddenDiv = document.getElementById('hidden-div')
+    hiddenDiv.style.display = 'block';
+      hiddenDiv.style.display = 'none'
+    }
+
+// hideshow()
 
 
 function getQuestions(id){
@@ -93,26 +100,28 @@ function renderCurrentQuestion(question) {
                 ++correctCount;
                 currentScore = calculateScore(correctCount, questionCounter)
                 console.log(questionCounter)
-                document.getElementById("score-output").innerText = `Here's your new score player ${currentScore} `+"%" ;
+                document.getElementById("score-output").innerText = `Score ${currentScore} `+"%" ;
+                // alert("Correct")
 
 
         }
         else{
-            console.log("wrong");
-            document.getElementById("score-output").innerText = `Bye hater ${currentScore}`+"%";
+            document.getElementById("score-output").innerText = `Score ${currentScore}`+"%";
+            // alert("wrong");
 
 
         }
  		   });
+       choice.addEventListener("click", function(e){
+         if(e.target.innerText == correctAnswer){
+           getQuestions(++questionCounter);
+         }
+         else{
+           alert("Try Again")
+         }
+       })
      });
 };
-
-
-isEnded = () => {
-  // return this.question. === this.questions.length
-}
-}
-
 
 
 
@@ -163,3 +172,4 @@ isEnded = () => {
 // }
 // //  I need 2 other AJAX requests
 // PUT and Delete!!
+}
