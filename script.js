@@ -98,6 +98,7 @@ function renderCurrentQuestion(question) {
 		    if(e.target.innerText == correctAnswer){
                 console.log("sup");
                 ++correctCount;
+                getQuestions(++questionCounter)
                 currentScore = calculateScore(correctCount, questionCounter)
                 console.log(questionCounter)
                 document.getElementById("score-output").innerText = `Score ${currentScore} `+"%" ;
@@ -107,19 +108,19 @@ function renderCurrentQuestion(question) {
         }
         else{
             document.getElementById("score-output").innerText = `Score ${currentScore}`+"%";
-            // alert("wrong");
+            // alert("Try Again");
 
 
         }
  		   });
-       choice.addEventListener("click", function(e){
-         if(e.target.innerText == correctAnswer){
-           getQuestions(++questionCounter);
-         }
-         else{
-           alert("Try Again")
-         }
-       })
+       // choice.addEventListener("click", function(e){
+       //   if(e.target.innerText == correctAnswer){
+       //     getQuestions(++questionCounter);
+       //   }
+       //   else{
+       //     alert("Try Again")
+       //   }
+       // })
      });
 };
 
