@@ -1,176 +1,90 @@
+let questions = {};
+let currentQuestion;
+let numTries = numCorrect = 0;
 
-const quesButton = document.getElementById("show-ques");
-const baseUrl = "http://localhost:3000/api/v1/questions";
-const choiceArray = Array.from(document.getElementsByClassName("choice-text"));
-let availableOptions = [];
-let currentQuestion = {};
-let questionCounter = 0;
-let correctCount = 0;
+document.getElementById('show-ques').addEventListener('click', () => {
+    fetch('http://localhost:3000/api/v1/questions')
+        .then(res=>res.json())
+        .then(json => questions = json)
+        .then(()=> enableUI())
+        .then(()=> nextQuestion());
+});
 
+document.getElementById('get-new-questions').addEventListener('click', () => {
+    fetch('http://localhost:3000/api/v1/new_questions')
+        .then(res=>res.json())
+        .then(json=> questions = json)
+        .then(()=> enableUI())
+        .then(()=> nextQuestion())
+});
 
-quesButton.addEventListener("click",function(e){
-  getQuestions(++questionCounter);
-  },hideshow);
+["a", "b", "c", "d"].forEach(id=>{
+    document.getElementById(id).addEventListener('click', ()=> {
+        handleClick(id);
+    })
+})
 
-function hideshow() {
-  const hiddenDiv = document.getElementById('hidden-div')
-    hiddenDiv.style.display = 'block';
-      hiddenDiv.style.display = 'none'
+function enableUI(enable=true) {
+    const goButton = document.getElementById('hidden-div');
+    const welcome = document.getElementById('welcome-container');
+    const questions = document.getElementById('question-container');
+    const getNewButton = document.getElementById('get-new-questions');
+
+    goButton.style.display = enable ? "none" : "block";
+    welcome.style.display = enable ? "none" : "block";
+    questions.style.display = enable ? "block" : "none";
+    getNewButton.style.display = enable ? "none" : "inline";
+}
+
+function nextQuestion() {
+    if (currentQuestion == undefined) {
+        currentQuestion = 0;
+    } else {
+        currentQuestion++;
     }
 
-// hideshow()
+    if (currentQuestion > questions.length - 1) {
+        enableUI(false);
+        alert(`Thanks for playing!\n\nYour Score: ${(numCorrect / numTries * 100).toFixed(1)}%`);
+        numTries = numCorrect = 0;
+        currentQuestion = undefined;
+        setScore({clearScore: true});
+        return;
+    }
 
+    const questionContainer = document.getElementById('question-text');
+    questionContainer.innerText = questions[currentQuestion].question;
+    
+    const answers = JSON.parse(questions[currentQuestion].incorrect_answer);
+    const answerElementIDs = ["a", "b", "c", "d"];
+    const answersElements = answerElementIDs.map(id=>document.getElementById(id));
+    const randomPlace = Math.floor((Math.random() * 3));
+    answers.splice(randomPlace, 0, questions[currentQuestion].correct_anwser);
 
-function getQuestions(id){
-  fetch(`http://localhost:3000/api/v1/questions/${id}`)
-  .then(res => res.json())
-  .then(question =>{
-    console.log(question);
-    renderCurrentQuestion(question);
-  })
-  .catch((error) => {
+    answersElements.forEach((ele, index)=>{
+        ele.innerText = answers[index];
+    })
 
-  console.log( "hello", error)
-  reDirect()
-});
-// // }
-// Question.getQuestions();
-// // calling the get questions class
-
-function reDirect() { 
-  console.log("hello")
-  // redirecting to function that would render a form and post to the database via fetch request
-  // const gameContainer = document.createElement("<div id= 'game-html'  >
-  //             <label for='lname'>Username</label>
-  //             <input type='text' name='LastName'id='lname' placeholder='enter you name'><br/><br/>
-  //             <input type='submit' value='Save' id='save-button'/>
-  //             </div>")
-
-const questionContainer =  document.getElementById('question-container').style.visibility = "hidden";
-const formDiv = document.getElementById("form-div").style.display = "none"
-// const highscoreContainer =  document.getElementById('high-score-container').appendChild(gameContainer);
-}
-// const myForm = document.getElementById('myForm').style.visibility = 'visible'
-
-// const saveButton = document.getElementById('save-button');
-//  So if all the questions have gone through I then want to load the form ?
-// How would I load the form after questions have been answered?
-
-function calculateScore(totalCorrect, numQuestions ) {
-  return ((correctCount/questionCounter) * 100).toFixed(1);
 }
 
-function renderCurrentQuestion(question) {
-    let innerQuestion = document.getElementById("question-text").innerText = question.question;
-    // produces the string question
+function handleClick(choice) {
+    numTries++;
+    const chosenAnswer = document.getElementById(choice).innerText;
+    const correct = chosenAnswer === questions[currentQuestion].correct_anwser;
+    if (correct) {
+        numCorrect++;
+        setScore();    
+        nextQuestion();
+    } else {
+        setScore();
+    }
+}
 
-    const incorrectOptions = question.incorrect_answer.replace(/]|"|"|/g,"").substring(1).split(',');
-    // produces an array of incorrect answers
-    // console.log(incorrectOptions)
-    let correctAnswer = question.correct_anwser;
-    // displays the right choice
-
-    let answerSpace = Math.floor(Math.random() * 3) + 1;
-    // returns a random integer between 0 -> 4
-
-    let currentScore = calculateScore(correctCount, questionCounter)
-    // setting player's current score to  a percent
-
-    const optionsArray = incorrectOptions.splice(answerSpace -1,0,correctAnswer);
-    // randomizing choice selections
-
-
-    incorrectOptions.forEach((choice,index) => {
-      question ['choice' + (index +1)] = choice;
-    });
-    // iterating throughout the options
-
-    console.log(incorrectOptions)
-
-    choiceArray.forEach(choice =>{
-      const number = choice.dataset['number']
-      choice.innerText = question['choice' + number]
-    });
-
-  	choiceArray.forEach((choice) => {
-		 choice.addEventListener("click",function(e){
-       console.log('clicked on an option')
-		    if(e.target.innerText == correctAnswer){
-                console.log("sup");
-                ++correctCount;
-                getQuestions(++questionCounter)
-                currentScore = calculateScore(correctCount, questionCounter)
-                console.log(questionCounter)
-                document.getElementById("score-output").innerText = `Score ${currentScore} `+"%" ;
-                // alert("Correct")
-
-
-        }
-        else{
-            document.getElementById("score-output").innerText = `Score ${currentScore}`+"%";
-            // alert("Try Again");
-
-
-        }
- 		   });
-       // choice.addEventListener("click", function(e){
-       //   if(e.target.innerText == correctAnswer){
-       //     getQuestions(++questionCounter);
-       //   }
-       //   else{
-       //     alert("Try Again")
-       //   }
-       // })
-     });
-};
-
-
-
-
-
-//
-//
-// const configObj = {
-//   method: 'POST',
-//   headers: {
-//     'Content-Type': 'application/json',
-//   },
-//   body: JSON.stringify({question:
-//     "correct_anwser": "6",
-//      "incorrect_answer": "[\"5\", \"3\", \"4\"]",
-//      "question": "How many NBA championship rings does Michael Jordan have?",
-//      })
-// .then(response => response.json())
-// .then(data => {
-//   console.log('Success:', data);
-// })
-// .catch((error) => {
-//   console.error('Error:', error);
-// });
-// }
-
-// fetch request with
-// should be added after the end of the game?
-// function adds a new question to the database
-// newQuestion(){
-// fetch(`http://localhost:3000/api/v1/questions/${id}`/post, {
-//
-
-// should be added after end of game.
-// function deletes question from the database.
-// deleteQuestion(){
-// // fetch request with delete
-// // removing a question
-// fetch(`http://localhost:3000/api/v1/questions/${id}`, {
-//   method: 'delete', // or 'PUT'
-// .then(response => response.json())
-// .then(data => {
-//   console.log('Success:', data);
-// })
-// .catch((error) => {
-//   console.error('Error:', error);
-// // });
-// }
-// //  I need 2 other AJAX requests
-// PUT and Delete!!
+function setScore(options = {}) {
+    const scoreElement = document.getElementById('score-output');
+    if (options.clearScore) {
+        scoreElement.innerText = "";
+    } else {    
+        scoreElement.innerText = (numCorrect / numTries * 100).toFixed(1) + '% Score'
+    }
 }
